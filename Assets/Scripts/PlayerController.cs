@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
   [SerializeField] float controlRollFactor = -40f;
   float xThrow, yThrow;
   bool isControlEnabled = true;
+  AudioSource sound;
   Rigidbody rigidBody;
   void Start() 
   {
@@ -32,7 +33,7 @@ public class PlayerController : MonoBehaviour
     if (isControlEnabled) {
       ProcessTranslation();
       ProcessRotation();
-      //ProcessFiring();
+      ProcessFiring();
     }
 
   }
@@ -71,27 +72,22 @@ public class PlayerController : MonoBehaviour
   {
     if (CrossPlatformInputManager.GetButton("Fire"))
     {
-      ActivateGuns();
+      SetGunsActive(true);
     }
     else
     {
-      DeactivateGuns();
+      SetGunsActive(false);
+      sound = gameObject.GetComponent<AudioSource>();
+      sound.Play();
     }
   }
 
-  void ActivateGuns()
+  void SetGunsActive(bool isActive)
   {
     foreach (GameObject gun in guns)
     {
-      gun.SetActive(true);
-    }
-  }
-
-  void DeactivateGuns()
-  {
-    foreach (GameObject gun in guns)
-    {
-      gun.SetActive(false);
+      var emissionModule = gun.GetComponent<ParticleSystem>().emission;
+      emissionModule.enabled = isActive;
     }
   }
 }
