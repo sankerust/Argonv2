@@ -7,7 +7,7 @@ public class SceneLoader : MonoBehaviour
 {
     void Start()
     {
-      Invoke("LoadNextScene", 3f);
+      Invoke("LoadNextScene", 6f);
     }
     private void LoadNextScene()
     {
